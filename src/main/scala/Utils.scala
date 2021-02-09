@@ -4,22 +4,25 @@ object Utils
 {
 
     /**
-     * Given the number n, it replaces the digit at 'index' position
+     * Given the number n, it replaces the digits at 'indexes' position
      * and returns a list of numbers with the 'index' digit replaced.
      * @param n Initial number
-     * @param index Index of digit to be changed
+     * @param indexes Index of digit to be changed
      * @return A list of numbers with the 'index' digit changed
      */
-    def replacer(n: Int, index: Int): Seq[Int] = {
+    def replacer(n: Int, indexes: List[Int]): Seq[Int] = {
 
         val str = n.toString
-        if (index > str.length)
-            throw new RuntimeException("Index must be minor or equal to " + str.length)
 
-        val ciphers = List.range(1, 10)
-        ciphers.map{  i =>
-            _replaceChar(str, i, index)
-        }
+        assume( indexes
+                .map { _ <= str.length }
+                .forall( _ == true)
+        , "Indexes must be in range")
+
+        List.range(0, 10).map {  i =>
+            _replaceChar(str, i, indexes)
+        }.filter( _ >= n )
+
     }
 
     /**
@@ -33,8 +36,7 @@ object Utils
             return n > 1
         if (n % 2 == 0 || n % 3 == 0)
             return false
-        while (scala.math.pow(i, 2) <= n)
-        {
+        while (scala.math.pow(i, 2) <= n) {
             if (n % i == 0 || n % (i + 2) == 0)
                 return false
             return isPrime(n, _inc6(i))
@@ -44,9 +46,11 @@ object Utils
 
     val _inc6: (Int) => Int = (n) => n + 6
 
-    val _replaceChar: (String, Int, Int) => Int = (str, i, index) => {
+    val _andReducer: (Boolean, Boolean) => Boolean = (acc, b) => (acc && b)
+
+    val _replaceChar: (String, Int, List[Int]) => Int = (str, i, indexes) => {
         val chars = str.toCharArray
-        chars(index) = (48+i).toChar
+        indexes.foreach { chars(_) = (48+i).toChar }
         String.valueOf(chars).toInt
     }
 }

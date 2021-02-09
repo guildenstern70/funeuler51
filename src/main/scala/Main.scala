@@ -21,7 +21,7 @@ object Main
         println(s"Euler51 $VERSION")
         val results =
             Utils
-                .replacer(13, 0)
+                .replacer(56003, List(2,3))
                 .filter { Utils.isPrime(_) }
         println(s"Results: $results")
     }
