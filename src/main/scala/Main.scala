@@ -19,10 +19,28 @@ object Main
 
     def main(args: Array[String]): Unit = {
         println(s"Euler51 $VERSION")
-        val results =
-            Utils
-                .replacer(56003, List(2,3))
-                .filter { Utils.isPrime(_) }
-        println(s"Results: $results")
+        familyExplorer(Utils.combinations(5), 10000, 158000)
+    }
+
+    def familyExplorer(combinations: List[IndexedSeq[Int]], min: Int, max: Int): Unit = {
+        var currentMaxRank = 0
+        println("\n  Family Rank        |  Minimum ")
+        println("=========================================")
+        combinations.foreach { combo =>
+            currentMaxRank = fixedVectorExplorer(currentMaxRank, min, max, combo)
+        }
+    }
+
+    def fixedVectorExplorer(currentMaxRank:Int,  min: Int, max: Int, combo: IndexedSeq[Int]): Int = {
+        var curMax = currentMaxRank
+        List.range(min, max).foreach { number =>
+            val family = Utils.primeFamily(number, combo)
+            val rank = family.length
+            if (rank > curMax) {
+                curMax = rank
+                println(s"  $rank                  |  ${family.min}")
+            }
+        }
+        curMax
     }
 }
