@@ -12,7 +12,7 @@ object Utils
     def combinations(n: Int): List[IndexedSeq[Int]] =
         List.range(1, Math.pow(2, n.toDouble).toInt )
                 .map( x => _intToBinary(x.toInt, n))
-                .map( _binaryToList(_) )
+                .map( _binaryToList )
 
     /**
      * Given the number n, it returns a list of primes
