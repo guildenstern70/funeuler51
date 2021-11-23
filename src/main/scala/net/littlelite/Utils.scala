@@ -132,10 +132,9 @@ object Utils {
   }
 
   /**
-   * Pure function to test primality. Uses recurtion.
+   * Pure function to test primality. Uses recursion.
    *
    * @param n Number to test if it's prime
-   * @param i Seed initializer needed for recursion
    * @return True if the number is prime
    */
   def isPrime(n: Int): Boolean = {
