@@ -1,5 +1,6 @@
 package net.littlelite
 
+import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 
 object Utils {
@@ -39,7 +40,7 @@ object Utils {
     Utils
       .replacer(n, indexes)
       .filter {
-        Utils.isPrime(_)
+        Utils.isPrime
       }
 
   /**
@@ -137,17 +138,15 @@ object Utils {
    * @param i Seed initializer needed for recursion
    * @return True if the number is prime
    */
-  def isPrime(n: Int)(implicit i: Int = 5): Boolean = {
-    if (n <= 3)
-      return n > 1
-    if (n % 2 == 0 || n % 3 == 0)
-      return false
-    while (i * i <= n) {
-      if (n % i == 0 || n % (i + 2) == 0)
-        return false
-      return isPrime(n)(i + 6)
+  def isPrime(n: Int): Boolean = {
+    val end = math.sqrt(n.toDouble).toInt
+
+    @tailrec
+    def inner(d: Int): Boolean = {
+      (d > end) || (n % d != 0 && n % (d + 2) != 0) && inner(d + 6)
     }
-    true
+
+    n > 1 && ((n & 1) != 0 || n == 2) && (n % 3 != 0 || n == 3) && inner(5)
   }
 
   def _intToBinary(i: Int, digits: Int = 8): String =
@@ -156,7 +155,7 @@ object Utils {
   def _binaryToList(binary: String): IndexedSeq[Int] =
     0.until(binary.length).filter(binary.startsWith("1", _))
 
-  val _replaceChar: (String, Int, IndexedSeq[Int]) => Int = (str, i, indexes) => {
+  def _replaceChar: (String, Int, IndexedSeq[Int]) => Int = (str, i, indexes) => {
     val chars = str.toCharArray
     indexes.foreach {
       chars(_) = (48 + i).toChar

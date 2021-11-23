@@ -5,6 +5,11 @@ import org.scalatest.matchers.should
 
 class ReplacerTest extends AnyFlatSpec with should.Matchers {
 
+    "Replacement char" should "replace stars in string" in {
+        val replaced = Utils._replaceChar("1**00", 3, Vector(1,2))
+        replaced should be (13300)
+    }
+
     "Replacement function" should "produce the correct prime sequence with 1-digit input" in {
         Utils.primeFamily(13, Vector(0)) should contain inOrderOnly (13, 23, 43, 53, 73, 83)
     }

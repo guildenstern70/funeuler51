@@ -18,10 +18,15 @@ import scala.collection.mutable.ListBuffer
 object Main {
 
   final val VERSION = "v.0.1.2"
+  final val DIGITS = 5
 
   def main(args: Array[String]): Unit = {
     println(s"Euler51 $VERSION")
-    familyExplorer(Utils.combinations(2), 10, 99)
+    val t1 = System.nanoTime
+    val minmax = Utils.getMinMaxFromDigits(DIGITS)
+    familyExplorer(Utils.combinations(DIGITS), minmax._1, minmax._2)
+    val duration = (System.nanoTime - t1) / 1e9d
+    println("Elapsed " + duration)
   }
 
   def find(numberOfDigits: Int, replacingNumberOfDigits: Int, rank: Int): Option[Result] = {
